@@ -5,7 +5,7 @@ use App\Http\Controllers\Project1;
 
 
 Route::get('/', function () {
-    return redirect('homepage');
+    return redirect('admin');
 });
 
 
