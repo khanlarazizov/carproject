@@ -11,8 +11,7 @@ class Car extends Model
     protected $table='cars';
     public $timestamps = false;
     protected $fillable = ['id','car_name'];
-
-//    protected $fillable = [
-//        'name', 'detail'
-//    ];
+    public function Customer(){
+        return $this->hasMany(Customer::class, 'carbrand','id');
+    }
 }

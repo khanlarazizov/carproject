@@ -11,4 +11,8 @@ class Customer extends Model
     public $timestamps = false;
     protected $table='customers';
     protected $fillable = ['id','name', 'surname', 'birthdate', 'gender', 'carbrand', 'releaseyear', 'color'];
+
+    public function Car(){
+        return $this->hasOne(Car::class, 'id','carbrand');
+    }
 }

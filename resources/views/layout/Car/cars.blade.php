@@ -1,7 +1,7 @@
-@extends('layout.starp')
+@extends('layout.homepage')
 @section('title')
     @php
-        use App\Http\Controllers\CustCont;
+        use App\Http\Controllers\CustomerController;
     @endphp
 
     @csrf
@@ -49,35 +49,35 @@
                 </div>
             </div>
 
-{{--           edit modal--}}
-{{--            <div class="modal fade" id="editmodal" tabindex="-1" aria-labelledby="exampleModalLabel"--}}
-{{--                    aria-hidden="true">--}}
-{{--            <div class="modal-dialog">--}}
-{{--                <div class="modal-content">--}}
-{{--                    <div class="modal-header">--}}
-{{--                        <h1 class="modal-title fs-5" id="addModalLabel">Yeni Avtomobil</h1>--}}
-{{--                        <button type="button" class="btn-close" data-bs-dismiss="modal"--}}
-{{--                                aria-label="Close"></button>--}}
-{{--                    </div>--}}
-{{--                    <div class="modal-body">--}}
-{{--                        <form method="post" class="row g-3">--}}
-{{--                            @csrf--}}
-{{--                            <div class="col-12">--}}
-{{--                                <label for="carname" class="form-label">Avtomobil Markasi</label>--}}
-{{--                                <input type="text" class="form-control" id="car_name" name="car_name">--}}
-{{--                            </div>--}}
-{{--                            <div class="modal-footer">--}}
-{{--                                <button type="submit" class="add_car" id="addcar">Save changes</button>--}}
-{{--                                <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close--}}
-{{--                                </button>--}}
-{{--                            </div>--}}
-{{--                        </form>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
+            {{--           edit modal--}}
+            {{--            <div class="modal fade" id="editmodal" tabindex="-1" aria-labelledby="exampleModalLabel"--}}
+            {{--                    aria-hidden="true">--}}
+            {{--            <div class="modal-dialog">--}}
+            {{--                <div class="modal-content">--}}
+            {{--                    <div class="modal-header">--}}
+            {{--                        <h1 class="modal-title fs-5" id="addModalLabel">Yeni Avtomobil</h1>--}}
+            {{--                        <button type="button" class="btn-close" data-bs-dismiss="modal"--}}
+            {{--                                aria-label="Close"></button>--}}
+            {{--                    </div>--}}
+            {{--                    <div class="modal-body">--}}
+            {{--                        <form method="post" class="row g-3">--}}
+            {{--                            @csrf--}}
+            {{--                            <div class="col-12">--}}
+            {{--                                <label for="carname" class="form-label">Avtomobil Markasi</label>--}}
+            {{--                                <input type="text" class="form-control" id="car_name" name="car_name">--}}
+            {{--                            </div>--}}
+            {{--                            <div class="modal-footer">--}}
+            {{--                                <button type="submit" class="add_car" id="addcar">Save changes</button>--}}
+            {{--                                <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close--}}
+            {{--                                </button>--}}
+            {{--                            </div>--}}
+            {{--                        </form>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
+            {{--        </div>--}}
 
-    </div>
+        </div>
 
 
         @endsection
@@ -100,9 +100,10 @@
                             <th scope="row">{{$key->id}}</th>
                             <td>{{$key->car_name}}</td>
                             <td>
-                                <a href="{{route('updatecar',$key->id)}}" id="updatecar" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editmodal">Redakte
+                                <a href="{{route('cars.updatePost',$key->id)}}" id="updatecar" class="btn btn-secondary"
+                                   data-bs-toggle="modal" data-bs-target="#editmodal">Redakte
                                     et</a>
-                                <a href="{{route('cardelete',$key->id)}}" id="deletecar"
+                                <a href="{{route('cars.delete',$key->id)}}" id="deletecar"
                                    class="btn btn-danger">Sil</a>
                             </td>
                         </tr>
@@ -129,14 +130,28 @@
                     $('#addcar').click(function () {
                         $.ajax({
                             type: 'post',
-                            url: 'carinsertPost',
+                            url: 'cars.newPost',
                             data: $('form').serialize()
 
                         })
                     })
 
+                    $('#memberBody').on('click', '#deletecar', function () {
 
+                        var product_id = $(this).attr("id");
+                        confirm("Are You sure want to delete !");
 
+                        $.ajax({
+                            type: "DELETE",
+                            url: 'cars.delete.' + product_id,
+                            success: function (data) {
+                                table.draw();
+                            },
+                            error: function (data) {
+                                console.log('Error:', data);
+                            }
+                        });
+                    });
                 });
 
             </script>

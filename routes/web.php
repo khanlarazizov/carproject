@@ -2,36 +2,42 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Project1;
-
-
-Route::get('/', function () {
-    return redirect('admin');
-});
-
-
-Route::get('admin', [\App\Http\Controllers\CustCont::class, 'admin'])->name('admin');
-
-Route::any('carmenu', [\App\Http\Controllers\CustCont::class, 'carmenu'])->name('carmenu');
-
-Route::post('carinsertPost', [\App\Http\Controllers\CustCont::class, 'insertcarPost'])->name('insertcarPost');
-
-
-Route::get('updatecar.{id}', [\App\Http\Controllers\CustCont::class, 'updatecar'])->name('updatecar');
-Route::post('updatecarPost.{id}', [\App\Http\Controllers\CustCont::class, 'updatecarPost'])->name('updatecarPost');
-
-
-Route::get('cardelete.{id}', [\App\Http\Controllers\CustCont::class, 'cardelete'])->name('cardelete');
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CarController;
 
 
 
-Route::get('admininsert', [\App\Http\Controllers\CustCont::class, 'admin1'])->name('admin1');
-Route::post('admininsertPost', [\App\Http\Controllers\CustCont::class, 'insertPost'])->name('insertPost');
+
+//customers-menu
+Route::get('/', [CustomerController::class, 'index'])->name('customers.index');
+
+//customer-create
+Route::get('customers.new', [CustomerController::class, 'create'])->name('customers.create');
+Route::post('customers.newPost', [CustomerController::class, 'createPost'])->name('customers.createPost');
+
+//customer-update
+Route::get('customers.update.{id}', [CustomerController::class, 'update'])->name('customers.update');
+Route::post('customers.updatePost.{id}', [CustomerController::class, 'updatePost'])->name('customers.updatePost');
+
+//customer-delete
+Route::get('customers.delete.{id}', [CustomerController::class, 'delete'])->name('customers.delete');
 
 
 
-Route::get('updatecustomer.{id}', [\App\Http\Controllers\CustCont::class, 'updatecus'])->name('updatecus');
-Route::post('updatecustomerPost.{id}', [\App\Http\Controllers\CustCont::class, 'updatecusPost'])->name('updatecusPost');
 
 
-Route::get('delete.{id}', [\App\Http\Controllers\CustCont::class, 'customerdelete'])->name('customerdelete');
+//cars-menu
+Route::any('carmenu', [CarController::class, 'carmenu'])->name('carmenu');
+//car-create
+Route::post('cars.newPost', [CarController::class, 'createPost'])->name('cars.createPost');
+
+//car-update
+Route::get('cars.update.{id}', [CarController::class, 'update'])->name('cars.update');
+Route::post('cars.updatePost.{id}', [CarController::class, 'updatePost'])->name('cars.updatePost');
+
+//car-delete
+Route::get('cars.delete.{id}', [CarController::class, 'delete'])->name('cars.delete');
+
+
+
 

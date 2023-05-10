@@ -1,4 +1,4 @@
-@extends('layout.starp')
+@extends('layout.homepage')
 @section('title')
     <div class="row">
         <div class="col-1"></div>
@@ -6,7 +6,7 @@
             <h1>Müştərilər</h1>
         </div>
         <div class="col-3">
-            <a class="btn btn-primary" href="{{route('admin1')}}" role="button">Yeni Musteri</a>
+            <a class="btn btn-primary" href="{{route('customers.create')}}" role="button">Yeni Musteri</a>
         </div>
     </div>
 @endsection
@@ -26,6 +26,7 @@
     @php
         use Carbon\Carbon;
     @endphp
+
     <div class="container">
         @csrf
 
@@ -48,10 +49,10 @@
                     <td>{{Carbon::now()->diffInYears($key->birthdate)}}</td>
 
                     <td>{{$key->gender}}</td>
-                    <td>{{$key->carbrand}}</td>
+                    <td>{{$key->car->car_name}}</td>
                     <td>
-                        <a href="{{route('updatecus',$key->id)}}" class="link-info">Redakte et</a>
-                        <a href="{{route('customerdelete',$key->id)}}" class="link-danger delete">Sil</a>
+                        <a href="{{route('customers.update',$key->id)}}" class="link-info">Redakte et</a>
+                        <a href="{{route('customers.delete',$key->id)}}" class="link-danger delete">Sil</a>
                     </td>
 
                 </tr>

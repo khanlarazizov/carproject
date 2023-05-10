@@ -1,4 +1,4 @@
-@extends('layout.starp')
+@extends('layout.homepage')
 
 
 @section('content')
@@ -12,33 +12,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    @php
+        use App\Http\Controllers\CustomerController;
+    @endphp
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <form action="{{route('updatecusPost',$customerInfo->id)}}" method="post">
+    <form action="{{route('customers.createPost')}}" method="post">
         @csrf
 
         <div action="insert" class="row">
             <div class="col-9">
                 <h1>Yeni musteri</h1>
             </div>
+            @if($errors->any())
+                <ul>
+                    @foreach($errors->all() as $errors)
+                        <li>{{$errors}}</li>
+                    @endforeach
+                </ul>
+            @endif
             <div class="col-3">
                 <button class="btn btn-primary" type="submit" name="insert">Yaddas</button>
-                <a class="btn btn-primary" href="{{route('admin')}}" role="button">Imtina</a>
+                <a class="btn btn-primary" href="{{route('customers.index')}}" role="button">Imtina</a>
             </div>
         </div>
 
         <div class="row">
             <div class="col-6">
                 <label for="controlFname">Ad</label>
-                <input type="text" class="form-control" value="{{$customerInfo->name}}" required="" aria-label="First name" id="controlFname"
+                <input type="text" class="form-control" required="" aria-label="First name" id="controlFname"
                        name="name">
             </div>
             <div class="col-6">
                 <label for="controlLname">Soyad</label>
-                <input type="text" class="form-control" value="{{ $customerInfo->surname}}" required="" aria-label="Last name" id="controlLname"
+                <input type="text" class="form-control" required="" aria-label="Last name" id="controlLname"
                        name="surname">
             </div>
         </div>
@@ -46,7 +52,7 @@
             <div class="col-6">
                 <label for="datapicker">Tevellud</label>
                 <div class="input-group date" data-provide="datepicker">
-                    <input type="text" class="form-control" required="" name="birthdate" value="{{\Carbon\Carbon::parse($customerInfo->birthdate)->format('m/d/Y') }}">
+                    <input type="text" class="form-control" required="" name="birthdate">
                     <span class="input-group-append">
                         <span class="input-group-text bg-white d-block">
                             <i class="fa fa-calendar"></i>
@@ -60,14 +66,14 @@
                 <div id="gender">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault1"
-                               value="Kisi" {{ ($customerInfo->gender=='Kisi')? "checked" : "" }}>
+                               value="Kisi" checked>
                         <label class="form-check-label" for="flexRadioDefault1">
                             Kisi
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="gender" id="flexRadioDefault2"
-                               value="Qadin" {{($customerInfo->gender=='Qadin')? "checked" : "" }}>
+                               value="Qadin">
                         <label class="form-check-label" for="flexRadioDefault2">
                             Qadin
                         </label>
@@ -78,15 +84,14 @@
                 <div class="col-6">
                     <label for="brand">Avtomobil Markasi</label>
                     <select class="form-select" aria-label="Default select example" id="brand" name="carbrand">
-
-                        <option value="One" {{ ($customerInfo->carbrand=='One')? "selected" : "" }}>One</option>
-                        <option value="Two" {{ ($customerInfo->carbrand=='Two')? "selected" : "" }}>Two</option>
-                        <option value="Three" {{ ($customerInfo->carbrand=='Three')? "selected" : "" }}>Three</option>
+                        @foreach ($cars as $car)
+                            <option value="$car->id">{{ $car->car_name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-6">
                     <label for="color">Rengi</label>
-                    <input type="text" class="form-control" aria-label="Last name" id="color" name="color" value="{{ $customerInfo->color}}">
+                    <input type="text" class="form-control" aria-label="Last name" id="color" name="color">
                 </div>
             </div>
 
@@ -95,20 +100,17 @@
                     <label for="year">Buraxilis Ili</label>
                     <select class="form-select" aria-label="Default select example" id="year" name="releaseyear">
 
-                        <option value="2000" {{ ($customerInfo->releaseyear=='2000')? "selected" : "" }}>2000</option>
-                        <option value="2001" {{ ($customerInfo->releaseyear=='2001')? "selected" : "" }}>2001</option>
-                        <option value="2002" {{ ($customerInfo->releaseyear=='2002')? "selected" : "" }}>2002</option>
+                        <option value="2000">2000</option>
+                        <option value="2001">2001</option>
+                        <option value="2002">2002</option>
                     </select>
                 </div>
             </div>
         </div>
     </form>
 
-    <script>
-        jQuery(document).ready(function ($) {
-            $('.datepicker').datepicker({
-                dateFormat: "yy-mm-dd"
-            });
+    <script type="text/javascript">$(function () {
+            $('#datepicker').datepicker();
         });
     </script>
 

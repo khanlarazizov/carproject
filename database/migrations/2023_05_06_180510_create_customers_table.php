@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +16,9 @@ return new class extends Migration
             $table->string('surname')->nullable();
             $table->date('birthdate')->nullable();
             $table->string('gender')->nullable();
-            $table->string('carbrand')->nullable();
+            $table->unsignedBigInteger('carbrand');
+            $table->foreign('carbrand')->references('id')->on('cars');
+//            $table->foreignId('carbrand')->constrained('cars')->onUpdate('cascade')->onDelete('cascade')->nullable();
             $table->year('releaseyear')->nullable();
             $table->string('color')->nullable();
         });
